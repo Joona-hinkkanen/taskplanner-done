@@ -1,0 +1,4 @@
+# Shell-skriptit ja Docker-tiedostot aina LF-rivinvaihdoin (myös Windowsilla)
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yml text eol=lf
