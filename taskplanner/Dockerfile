@@ -29,4 +29,5 @@ USER app
 EXPOSE 8000
 
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["gunicorn", "taskplanner.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-"]
+# Paikallisesti kuunnellaan porttia 8000, pilvessä (Render) Renderin antamaa $PORT-muuttujaa.
+CMD ["sh", "-c", "exec gunicorn taskplanner.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 3 --access-logfile -"]

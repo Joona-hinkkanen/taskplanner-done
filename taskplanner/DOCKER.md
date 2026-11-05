@@ -94,12 +94,14 @@ Render osaa rakentaa imagen suoraan `Dockerfile`ista:
    `DJANGO_SUPERUSER_*`). Älä aseta `PORT`-muuttujaa: Render välittää sen itse.
 7. **Deploy web service**.
 
-Render ajaa kontin `CMD`-komennon ja välittää `PORT`-ympäristömuuttujan.
-Jos haluat käyttää sitä, vaihda `CMD` muotoon:
+Render ajaa kontin ja välittää `PORT`-ympäristömuuttujan (oletuksena 10000).
+Imagen `CMD` on jo kirjoitettu niin, että se kuuntelee muuttujaa:
 
 ```dockerfile
-CMD ["sh", "-c", "gunicorn taskplanner.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 3"]
+CMD ["sh", "-c", "exec gunicorn taskplanner.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 3"]
 ```
+
+Paikallisesti `PORT` on asettamatta, jolloin käytetään porttia 8000.
 
 ## Vianetsintä
 
