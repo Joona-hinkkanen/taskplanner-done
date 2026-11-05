@@ -1,0 +1,28 @@
+# Git ja editorit
+.git
+.gitignore
+.idea
+.vscode
+
+# Python-välimuistit
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Paikalliset salaisuudet ja tietokannat
+.env
+*.sqlite3
+db.sqlite3
+data.json
+
+# Kerätyt staatiset tiedostot luodaan kontin käynnistyessä
+staticfiles/
+
+# Konttiin itseensä liittyvät tiedostot eivät kuulu imagen sisään
+Dockerfile
+.dockerignore
+docker-compose.yml
+DOCKER.md
