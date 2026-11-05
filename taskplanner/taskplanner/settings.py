@@ -181,6 +181,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # React frontend (Vite)
     "http://127.0.0.1:5173",  # Try adding this too
 ]
-
+   CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+   SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
