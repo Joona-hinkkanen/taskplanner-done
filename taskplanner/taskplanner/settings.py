@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Lataa ympäristömuuttujat .env-tiedostosta
+load_dotenv()  # Lataa ymp├ñrist├╢muuttujat .env-tiedostosta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +30,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = tuple(os.getenv('ALLOWED_HOSTS', '127.0.0.1 localhost').split())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG tulee ympäristömuuttujasta (Renderissä DEBUG=False)
 
 #ALLOWED_HOSTS = ['taskplanner-markkukynsijarvilektor.onrender.com']
 
@@ -102,7 +102,7 @@ DATABASES = {
         'NAME':  os.getenv('DB_NAME'),
         'USER':  os.getenv('DB_USER'),
         'PASSWORD':  os.getenv('DB_PASSWORD'),
-        'HOST':  os.getenv('DB_HOST'),  # tai palvelimen IP jos käytät etäyhteyttä
+        'HOST':  os.getenv('DB_HOST'),  # tai palvelimen IP jos k├ñyt├ñt et├ñyhteytt├ñ
         'PORT':  os.getenv('DB_PORT'),
     }
 }
@@ -172,7 +172,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",  # Lisää tämä
+        "rest_framework.authentication.TokenAuthentication",  # Lis├ñ├ñ t├ñm├ñ
         "rest_framework.authentication.BasicAuthentication",
     ],
 }
@@ -181,7 +181,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # React frontend (Vite)
     "http://127.0.0.1:5173",  # Try adding this too
 ]
-   CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
-   SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
