@@ -63,7 +63,8 @@ docker compose down -v           # pysäytä ja tyhjennä tietokanta
    (`pg_isready`) ennen kuin `web` käynnistyy.
 3. `entrypoint.sh` odottaa vielä itse tietokantayhteyttä, ajaa migraatiot ja
    `collectstatic`-komennon (whitenoise tarvitsee manifestin, koska `DEBUG=False`).
-4. Lopuksi gunicorn käynnistyy: `gunicorn taskplanner.wsgi:application --bind 0.0.0.0:8000`.
+4. Lopuksi gunicorn käynnistyy: `gunicorn taskplanner.wsgi:application --bind 0.0.0.0:${PORT:-8000}`.
+   Paikallisesti portti on 8000; Render antaa `PORT`-muuttujan itse.
 5. Sovellus ei aja root-käyttäjänä vaan UID 1000 -käyttäjänä (`app`).
 
 ## Testaus (esittelyä varten)
@@ -79,6 +80,20 @@ docker compose up --build
 5. `docker compose down && docker compose up -d` -> tehtävä on tallessa
    (tietokanta on nimessä `pgdata`).
 6. `docker compose ps` -> molemmat palvelut `running`/`healthy`.
+
+### Testattu tulos (5.11.2026)
+
+| Testi | Tulos |
+|---|---|
+| `docker compose up --build -d` | Image rakentui, `db` healthy, `web` healthy, portti 8000 auki |
+| `entrypoint.sh` lokit | Migraatiot OK, `198 static files copied`, pääkäyttäjä luotu / ohitettu idempotentisti, gunicorn käynnistyi |
+| `http://localhost:8000/admin/` | HTTP 200, kirjautuminen `admin` / `admin` -> "WELCOME, ADMIN", 0 kpl 4xx/5xx |
+| `http://localhost:8000/tasks/` | Kanban-näkymä renderöityi, 0 kpl 4xx/5xx |
+| `docker compose down` + `up -d` | Tehtävä `Docker-pysyvyystesti` säilyi tietokannassa (`tehtavia= 1`) |
+| `docker compose ps` | `taskplanner-db-1` healthy, `taskplanner-web-1` healthy |
+
+Testi ajettiin Windows 11:llä, Docker Desktop 29.9.2 -engineillä.
+Sama image toimii myös Renderissä (ks. alla).
 
 ## Render + Docker (valinnainen)
 
