@@ -51,7 +51,43 @@ def task_list(request):
     if request.user.is_superuser or request.user.is_staff:
         tasks_by_class = {task_class: Task.objects.filter(task_class=task_class) for task_class in task_classes}
 
-    return render(request, 'backlog/task_list.html', {'tasks_by_class': tasks_by_class})
+    return render(request, 'backlog/task_list.html', {
+        'tasks_by_class': tasks_by_class,
+        'task_classes': task_classes,
+    })
+
+@login_required
+def task_create(request):
+    """Lisää uusi tehtävä lomakkeelta."""
+    if request.method != "POST":
+        return redirect('task_list')
+
+    title = (request.POST.get('title') or '').strip()
+    if not title:
+        return redirect('task_list')
+
+    description = (request.POST.get('description') or '').strip()
+
+    # Tehtävä näkyy taululla vain, jos sillä on luokka. Siksi valitaan
+    # olemassa oleva luokka, luodaan uusi tai käytetään oletusluokkaa.
+    class_id = request.POST.get('task_class') or ''
+    new_class_title = (request.POST.get('new_class') or '').strip()
+
+    if class_id:
+        task_class = get_object_or_404(TaskClass, id=class_id)
+    elif new_class_title:
+        task_class, _ = TaskClass.objects.get_or_create(title=new_class_title)
+    else:
+        task_class, _ = TaskClass.objects.get_or_create(title='Yleinen')
+
+    Task.objects.create(
+        title=title,
+        description=description,
+        task_class=task_class,
+        user=request.user,
+    )
+
+    return redirect('task_list')
 
 @login_required
 def task_detail(request, task_id):

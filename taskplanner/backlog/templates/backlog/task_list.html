@@ -13,6 +13,37 @@
         <p><strong>Peruskäyttäjän tila:</strong> Näytetään vain omat tehtävät.</p>
     {% endif %}
 
+    <h2>Lisää tehtävä</h2>
+
+    <form method="post" action="{% url 'task_create' %}" class="card card-body mb-4">
+        {% csrf_token %}
+        <div class="mb-2">
+            <label for="id_title" class="form-label">Otsikko</label>
+            <input type="text" class="form-control" id="id_title" name="title" maxlength="200" required>
+        </div>
+        <div class="mb-2">
+            <label for="id_description" class="form-label">Kuvaus</label>
+            <textarea class="form-control" id="id_description" name="description" rows="2"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <label for="id_task_class" class="form-label">Tehtäväluokka</label>
+                <select class="form-select" id="id_task_class" name="task_class">
+                    <option value="">– valitse –</option>
+                    {% for task_class in task_classes %}
+                        <option value="{{ task_class.id }}">{{ task_class.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="id_new_class" class="form-label">tai uusi luokka</label>
+                <input type="text" class="form-control" id="id_new_class" name="new_class"
+                       maxlength="200" placeholder="Esim. Kotityöt">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Lisää tehtävä</button>
+    </form>
+
     <h2>Kanban taulu</h2>
 
     <script>

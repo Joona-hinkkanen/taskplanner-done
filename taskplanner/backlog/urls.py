@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, task_list, task_detail, task_done, task_not_done, task_delete, task_edit_form, task_edit_model_form, add_comment, delete_comment
+from .views import home, task_list, task_create, task_detail, task_done, task_not_done, task_delete, task_edit_form, task_edit_model_form, add_comment, delete_comment
 from .views import TaskListAPI, TaskDetailAPI, TaskClassListAPI
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -22,6 +22,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('', home, name='home'),
     path('tasks/', task_list, name='task_list'),
+    path('tasks/add/', task_create, name='task_create'),
     path('tasks/<int:task_id>/delete', task_delete, name='task_delete'),
     path('tasks/<int:task_id>/task_done', task_done, name='task_done'),
     path('tasks/<int:task_id>/task_not_done', task_not_done, name='task_not_done'),
